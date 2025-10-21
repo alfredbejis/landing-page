@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Partner Energético — Estudio gratuito de tu factura de luz</title>
+  <meta name="description" content="Solicita un estudio gratuito de tu factura de la luz. Optimiza potencia, tarifas y condiciones con un Partner Energético de confianza." />
+  
+  <!-- GSAP -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --text: #ffffff;
+      --soft: #dff7e6;
+      --accent: #18a957;
+      --muted: #9aa8a1;
+      --card: #121212;
+      --ring: #b7eccc;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --maxw: 1120px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg) 0%, #0e0e0e 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    a { color: var(--soft); text-decoration: none; }
+    .container { max-width: var(--maxw); padding: 24px; margin: 0 auto; }
+
+    /* Botón */
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(180deg, var(--accent), #118a47);
+      color: #fff;
+      box-shadow: var(--shadow);
+      transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:disabled { opacity: .6; cursor: not-allowed; }
+
+    /* HERO */
+    .hero { padding: 96px 0 48px; position: relative; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: center; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(223,247,230,.08);
+      border: 1px solid rgba(223,247,230,.22);
+      color: var(--soft);
+      font-size: 13px;
+    }
+    .title {
+      font-size: clamp(36px, 7vw, 84px);
+      line-height: .95; font-weight: 900;
+      margin: 18px 0 12px;
+    }
+    .title .char { display: inline-block; will-change: transform, opacity; }
+    .subtitle {
+      color: var(--muted);
+      font-size: clamp(15px, 2.2vw, 18px);
+      max-width: 680px;
+    }
+    .hero-card {
+      background: linear-gradient(180deg, rgba(223,247,230,.06), rgba(223,247,230,.03));
+      border: 1px solid rgba(223,247,230,.18);
+      border-radius: var(--radius);
+      padding: 20px;
+      backdrop-filter: blur(6px);
+      box-shadow: var(--shadow);
+    }
+
+    /* FORM */
+    .form { display: grid; gap: 14px; }
+    .field { display: grid; gap: 8px; }
+    .label { font-size: 14px; color: var(--soft); font-weight: 600; }
+    .input, .select, .file {
+      width: 100%; padding: 14px;
+      border-radius: 12px; border: 1px solid rgba(223,247,230,.35);
+      background: #0f0f0f; color: var(--text);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .input:focus, .select:focus, .file:focus {
+      border-color: var(--ring);
+      box-shadow: 0 0 0 4px rgba(183,236,204,.15);
+      outline: none;
+    }
+    .helper { font-size: 12px; color: var(--muted); }
+    .consent {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 12px; color: #cfd6d3;
+    }
+    .disclaimer { font-size: 11px; color: #9fb0a8; }
+
+    /* BENEFICIOS */
+    .benefits {
+      margin: 64px 0 16px;
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(223,247,230,.1);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .card h3 { margin: 0 0 8px; font-size: 18px; }
+    .card p { margin: 0; color: #cfd6d3; font-size: 14px; }
+
+    /* FAQ */
+    .faq { margin: 40px 0 80px; }
+    .faq-item {
+      border: 1px solid rgba(223,247,230,.15);
+      border-radius: 14px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%; text-align: left;
+      background: #101010; color: #e5fff1;
+      padding: 16px 18px; border: 0; cursor: pointer; font-weight: 700;
+    }
+    .faq-a { padding: 0 18px 16px; color: #cbd8d3; display: none; }
+    .faq-item[open] .faq-a { display: block; }
+
+    footer { border-top: 1px solid rgba(223,247,230,.12); padding: 26px 0; color: #9fb0a8; font-size: 13px; }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero { padding: 72px 0 32px; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .benefits { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="container" style="padding-top:18px">
+    <div class="badge">Partner Energético · Estudio gratuito de tu factura</div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <h1 id="animated-title" class="title">PARTNER ENERGÉTICO</h1>
+        <p class="subtitle">
+          Analizo tu contrato y tu consumo para detectar ahorros reales: optimización de potencia, tarifa y condiciones. 
+          Te doy un informe claro y sin compromiso.
+        </p>
+      </div>
+      <aside class="hero-card">
+        <!-- Formulario -->
+        <form id="lead-form" class="form">
+          <div class="field">
+            <label class="label" for="name">Nombre y apellidos</label>
+            <input class="input" id="name" type="text" required>
+          </div>
+          <div class="field">
+            <label class="label" for="email">Email</label>
+            <input class="input" id="email" type="email" required>
+          </div>
+          <div class="field">
+            <label class="label" for="phone">Teléfono</label>
+            <input class="input" id="phone" type="tel" required>
+          </div>
+          <label class="consent">
+            <input type="checkbox" id="gdpr" required>
+            <span>Acepto el tratamiento de mis datos según la política de privacidad.</span>
+          </label>
+          <button class="btn" id="submitBtn" type="submit">Quiero mi estudio gratuito</button>
+          <p class="disclaimer">Sin coste ni compromiso. Te contactaré en 24h.</p>
+          <div id="success" class="helper" style="display:none;color:#b9f0c9;">¡Solicitud enviada con éxito!</div>
+        </form>
+      </aside>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="benefits">
+      <div class="card"><h3>Optimización de potencia</h3><p>Paga solo por lo que necesitas, sin penalizaciones.</p></div>
+      <div class="card"><h3>Tarifa adecuada</h3><p>Comparamos mercado regulado y libre para maximizar tu ahorro.</p></div>
+      <div class="card"><h3>Informe claro</h3><p>Resultados comprensibles y recomendaciones reales.</p></div>
+    </div>
+  </section>
+
+  <section class="container faq">
+    <details class="faq-item" open>
+      <summary class="faq-q">¿Cuánto tarda el estudio?</summary>
+      <div class="faq-a">Normalmente en 24–48h desde que recibimos tu factura.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Tiene algún coste?</summary>
+      <div class="faq-a">No, es totalmente gratuito y sin compromiso.</div>
+    </details>
+  </section>
+
+  <footer class="container">© <span id="year"></span> Partner Energético · Política de privacidad</footer>
+
+  <script>
+    // Split animation
+    function splitToChars(el){
+      const text = el.textContent.trim();
+      el.textContent = "";
+      const frag = document.createDocumentFragment();
+      for (const ch of text){
+        const span = document.createElement("span");
+        span.className = "char";
+        span.textContent = ch === " " ? "\u00A0" : ch;
+        frag.appendChild(span);
+      }
+      el.appendChild(frag);
+      return Array.from(el.querySelectorAll(".char"));
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const title = document.getElementById("animated-title");
+      const chars = splitToChars(title);
+      chars.forEach((c)=>{ c.style.opacity=0; c.style.transform="translateY(40px)"; });
+
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.to(chars, {
+        opacity:1, y:0, duration:0.6, ease:"power3.out", stagger: 0.02,
+        scrollTrigger:{ trigger:title, start:"top 80%", once:true }
+      });
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      const form = document.getElementById("lead-form");
+      const btn = document.getElementById("submitBtn");
+      const ok = document.getElementById("success");
+
+      form.addEventListener("submit", (e)=>{
+        e.preventDefault();
+        btn.disabled = true; btn.textContent = "Enviando...";
+        setTimeout(()=>{
+          ok.style.display = "block";
+          form.reset();
+          btn.textContent = "¡Enviado!";
+          setTimeout(()=>{ btn.disabled = false; btn.textContent = "Quiero mi estudio gratuito"; }, 2000);
+        }, 1000);
+      });
+    });
+  </script>
+</body>
+</html>
