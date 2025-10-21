@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Partner Energético — Estudio gratuito de tu factura de luz</title>
   <meta name="description" content="Solicita un estudio gratuito de tu factura de la luz. Optimiza potencia, tarifas y condiciones con un Partner Energético de confianza." />
-  
+
   <!-- GSAP -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -137,11 +137,58 @@
 
     footer { border-top: 1px solid rgba(223,247,230,.12); padding: 26px 0; color: #9fb0a8; font-size: 13px; }
 
+    /* Circular Text + ShinyText */
+    .stats-circles{
+      display:grid; grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap:24px; align-items:center; justify-items:center; margin:40px 0;
+    }
+    .circle-wrap{
+      position:relative; width:240px; height:240px; border-radius:50%;
+      display:grid; place-items:center;
+      background: radial-gradient(120px 120px at center, rgba(223,247,230,.06), transparent 60%);
+    }
+    .circular-text{
+      position:absolute; inset:0; border-radius:50%; pointer-events:auto;
+      animation: pe-rotate var(--spin, 20s) linear infinite;
+      will-change: transform;
+    }
+    .circular-text span{
+      position:absolute; left:50%; top:50%;
+      transform-origin: 0 0;
+      font-size:14px; letter-spacing:1px; color:#dff7e6;
+    }
+    @keyframes pe-rotate { to { transform: rotate(360deg); } }
+    .circle-center{
+      position:relative; z-index:2; text-align:center;
+      background: rgba(223,247,230,.06);
+      border:1px solid rgba(223,247,230,.18);
+      border-radius: 16px; padding:16px 18px; min-width:160px;
+      box-shadow: var(--shadow);
+    }
+    .circle-center .big{
+      font-size: clamp(22px, 4.4vw, 32px); font-weight: 900; color:#fff; line-height:1;
+    }
+    .circle-center .label{
+      font-size:13px; color:#9fb0a8; margin-top:6px;
+    }
+    .shiny-text{
+      display:inline-block; font-weight:800;
+      background: linear-gradient(120deg, #ffffff 0%, #bdeed0 25%, #18a957 50%, #bdeed0 75%, #ffffff 100%);
+      -webkit-background-clip:text; background-clip:text; color: transparent;
+      animation: pe-shimmer var(--speed, 5s) linear infinite;
+      filter: drop-shadow(0 1px 0 rgba(0,0,0,.15));
+    }
+    @keyframes pe-shimmer {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
     /* Responsive */
     @media (max-width:980px){
       .hero { padding: 72px 0 32px; }
       .hero-grid { grid-template-columns: 1fr; }
       .benefits { grid-template-columns: 1fr; }
+      .stats-circles{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -160,24 +207,11 @@
         </p>
       </div>
       <aside class="hero-card">
-        <!-- Formulario -->
         <form id="lead-form" class="form">
-          <div class="field">
-            <label class="label" for="name">Nombre y apellidos</label>
-            <input class="input" id="name" type="text" required>
-          </div>
-          <div class="field">
-            <label class="label" for="email">Email</label>
-            <input class="input" id="email" type="email" required>
-          </div>
-          <div class="field">
-            <label class="label" for="phone">Teléfono</label>
-            <input class="input" id="phone" type="tel" required>
-          </div>
-          <label class="consent">
-            <input type="checkbox" id="gdpr" required>
-            <span>Acepto el tratamiento de mis datos según la política de privacidad.</span>
-          </label>
+          <div class="field"><label class="label">Nombre y apellidos</label><input class="input" id="name" type="text" required></div>
+          <div class="field"><label class="label">Email</label><input class="input" id="email" type="email" required></div>
+          <div class="field"><label class="label">Teléfono</label><input class="input" id="phone" type="tel" required></div>
+          <label class="consent"><input type="checkbox" id="gdpr" required> <span>Acepto el tratamiento de mis datos según la política de privacidad.</span></label>
           <button class="btn" id="submitBtn" type="submit">Quiero mi estudio gratuito</button>
           <p class="disclaimer">Sin coste ni compromiso. Te contactaré en 24h.</p>
           <div id="success" class="helper" style="display:none;color:#b9f0c9;">¡Solicitud enviada con éxito!</div>
@@ -194,62 +228,37 @@
     </div>
   </section>
 
+  <!-- Sección de texto circular -->
+  <section class="container" aria-label="Datos de confianza">
+    <div class="stats-circles">
+      <div class="circle-wrap">
+        <div class="circular-text" data-text="+100.000 CLIENTES • " data-radius="98" data-spin="22s" data-hover="speedUp"></div>
+        <div class="circle-center"><div class="big"><span class="shiny-text" style="--speed:4s">+100.000</span></div><div class="label">clientes</div></div>
+      </div>
+      <div class="circle-wrap">
+        <div class="circular-text" data-text="+15 AÑOS DE EXPERIENCIA • " data-radius="98" data-spin="26s" data-hover="slowDown"></div>
+        <div class="circle-center"><div class="big"><span class="shiny-text" style="--speed:6s">+15</span></div><div class="label">años de experiencia</div></div>
+      </div>
+    </div>
+  </section>
+
   <section class="container faq">
-    <details class="faq-item" open>
-      <summary class="faq-q">¿Cuánto tarda el estudio?</summary>
-      <div class="faq-a">Normalmente en 24–48h desde que recibimos tu factura.</div>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-q">¿Tiene algún coste?</summary>
-      <div class="faq-a">No, es totalmente gratuito y sin compromiso.</div>
-    </details>
+    <details class="faq-item" open><summary class="faq-q">¿Cuánto tarda el estudio?</summary><div class="faq-a">Normalmente en 24–48h desde que recibimos tu factura.</div></details>
+    <details class="faq-item"><summary class="faq-q">¿Tiene algún coste?</summary><div class="faq-a">No, es totalmente gratuito y sin compromiso.</div></details>
   </section>
 
   <footer class="container">© <span id="year"></span> Partner Energético · Política de privacidad</footer>
 
   <script>
-    // Split animation
-    function splitToChars(el){
-      const text = el.textContent.trim();
-      el.textContent = "";
-      const frag = document.createDocumentFragment();
-      for (const ch of text){
-        const span = document.createElement("span");
-        span.className = "char";
-        span.textContent = ch === " " ? "\u00A0" : ch;
-        frag.appendChild(span);
-      }
-      el.appendChild(frag);
-      return Array.from(el.querySelectorAll(".char"));
-    }
+    // === Animación título ===
+    function splitToChars(el){const t=el.textContent.trim();el.textContent="";const f=document.createDocumentFragment();for(const c of t){const s=document.createElement("span");s.className="char";s.textContent=c===" "?"\u00A0":c;f.appendChild(s);}el.appendChild(f);return Array.from(el.querySelectorAll(".char"));}
+    window.addEventListener("DOMContentLoaded",()=>{const title=document.getElementById("animated-title");const chars=splitToChars(title);chars.forEach(c=>{c.style.opacity=0;c.style.transform="translateY(40px)";});gsap.registerPlugin(ScrollTrigger);gsap.to(chars,{opacity:1,y:0,duration:.6,ease:"power3.out",stagger:.02,scrollTrigger:{trigger:title,start:"top 80%",once:true}});document.getElementById("year").textContent=new Date().getFullYear();
+    const form=document.getElementById("lead-form");const btn=document.getElementById("submitBtn");const ok=document.getElementById("success");form.addEventListener("submit",e=>{e.preventDefault();btn.disabled=true;btn.textContent="Enviando...";setTimeout(()=>{ok.style.display="block";form.reset();btn.textContent="¡Enviado!";setTimeout(()=>{btn.disabled=false;btn.textContent="Quiero mi estudio gratuito";},2000);},1000);});});
 
-    window.addEventListener("DOMContentLoaded", () => {
-      const title = document.getElementById("animated-title");
-      const chars = splitToChars(title);
-      chars.forEach((c)=>{ c.style.opacity=0; c.style.transform="translateY(40px)"; });
-
-      gsap.registerPlugin(ScrollTrigger);
-      gsap.to(chars, {
-        opacity:1, y:0, duration:0.6, ease:"power3.out", stagger: 0.02,
-        scrollTrigger:{ trigger:title, start:"top 80%", once:true }
-      });
-      document.getElementById("year").textContent = new Date().getFullYear();
-
-      const form = document.getElementById("lead-form");
-      const btn = document.getElementById("submitBtn");
-      const ok = document.getElementById("success");
-
-      form.addEventListener("submit", (e)=>{
-        e.preventDefault();
-        btn.disabled = true; btn.textContent = "Enviando...";
-        setTimeout(()=>{
-          ok.style.display = "block";
-          form.reset();
-          btn.textContent = "¡Enviado!";
-          setTimeout(()=>{ btn.disabled = false; btn.textContent = "Quiero mi estudio gratuito"; }, 2000);
-        }, 1000);
-      });
-    });
+    // === Texto circular ===
+    function createCircularText(el,text,radius){el.innerHTML="";const chars=Array.from(text);const total=chars.length;chars.forEach((ch,i)=>{const span=document.createElement("span");const angle=(360/total)*i;const rads=angle*(Math.PI/180);span.style.transform=`translate(-50%,-50%) rotate(${angle}deg) translate(${radius}px) rotate(${-angle}deg)`;span.textContent=ch;el.appendChild(span);});}
+    function applyHoverBehavior(el,mode){if(!mode)return;const base=getComputedStyle(el).getPropertyValue("--spin").trim()||"20s";const toMs=v=>v.endsWith("ms")?parseFloat(v):parseFloat(v)*1000;const toCss=ms=>(ms<1000)?ms+"ms":(ms/1000)+"s";const baseMs=toMs(base);const variants={"speedUp":baseMs/4,"slowDown":baseMs*2,"pause":0,"goBonkers":baseMs/20};el.addEventListener("mouseenter",()=>{const target=variants[mode]??baseMs;if(target===0){el.style.animationPlayState="paused";}else{el.style.animationDuration=toCss(target);el.style.animationPlayState="running";}});el.addEventListener("mouseleave",()=>{el.style.animationDuration=base;el.style.animationPlayState="running";});}
+    window.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll(".circular-text").forEach(el=>{const text=(el.dataset.text||"CIRCULAR TEXT • ");const radius=parseFloat(el.dataset.radius||"98");const spin=(el.dataset.spin||"20s");const hover=el.dataset.hover||"speedUp";el.style.setProperty("--spin",spin);createCircularText(el,text,radius);applyHoverBehavior(el,hover);});});
   </script>
 </body>
 </html>
